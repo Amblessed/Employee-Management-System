@@ -31,8 +31,8 @@
             <th scope="row" th:text="${employee.empId}">1</th>
             <td th:text="${employee.lastName}">Mark</td>
             <td th:text="${employee.firstName}">Otto</td>
-            <td th:text="${employee.dateOfBirth}">Otto</td>
-            <td th:text="${employee.salary}">Otto</td>
+            <td th:text="${{employee.dateOfBirth}}">Otto</td>
+            <td th:text="${{employee.salary}}">Otto</td>
             <td th:text="${employee.ssn}">Otto</td>
             <td th:text="${employee.phoneNumber}">Otto</td>
         </tr>

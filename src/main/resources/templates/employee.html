@@ -1,13 +1,59 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Employee</title>
-</head>
+<head th:replace="~{layouts :: header}"></head>
 <body>
-Here are some employee:
+<nav th:replace="~{layouts :: navigation}"></nav>
+<!--Here are some employee:
 <ol>
-    <li th:each="employee: ${employees}" th:text="${employee}">Employee Person</li>  <!--Display a list of employee using thymeleaf-->
-</ol>
+    <li th:each="employee: ${employees}" th:text="${employee}">Employee Person</li>  &lt;!&ndash;Display a list of employee using thymeleaf&ndash;&gt;
+</ol>-->
+
+
+
+<div class="container my-3">
+    <div class="row my-3">
+        <h4>Current Employees</h4>
+    </div>
+    <table class="table text-center table-bordered table-success table-hover table-striped table-sm">
+        <thead>
+        <tr>
+            <th scope="col">Emp Id</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Date of Birth</th>
+            <th scope="col">Salary</th>
+            <th scope="col">SSN</th>
+            <th scope="col">Phone Number</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="employee: ${employees}">
+            <th scope="row" th:text="${employee.empId}">1</th>
+            <td th:text="${employee.lastName}">Mark</td>
+            <td th:text="${employee.firstName}">Otto</td>
+            <td th:text="${employee.dateOfBirth}">Otto</td>
+            <td th:text="${employee.salary}">Otto</td>
+            <td th:text="${employee.ssn}">Otto</td>
+            <td th:text="${employee.phoneNumber}">Otto</td>
+        </tr>
+        <tr th:remove="all"> <!--Do not display this row in when started through spring-->
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+        </tr>
+        <tr th:remove="all"> <!--Do not display this row in when started through spring-->
+            <th scope="row">3</th>
+            <td colspan="2">Larry the Bird</td>
+            <td>@twitter</td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
 </body>
 </html>

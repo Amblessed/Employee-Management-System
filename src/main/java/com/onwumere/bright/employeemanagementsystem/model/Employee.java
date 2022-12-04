@@ -20,6 +20,7 @@ public class Employee {
 
     private Long id;
 
+    private int empId;
     private String firstName;
 
     private String lastName;
@@ -27,5 +28,7 @@ public class Employee {
     private LocalDate dateOfBirth;
 
     private BigDecimal salary;
+    private String ssn;
+    private String phoneNumber;
 
 }

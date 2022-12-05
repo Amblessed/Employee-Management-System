@@ -9,7 +9,6 @@ package com.onwumere.bright.employeemanagementsystem.formatter;
 import org.springframework.format.Formatter;
 import org.springframework.stereotype.Component;
 
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -17,11 +16,11 @@ import java.util.Locale;
 @Component
 public class LocalDateFormatter implements Formatter<LocalDate> {
 
-    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd MMMM, yyyy");
+    private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE;
 
     @Override
-    public LocalDate parse(String text, Locale locale) throws ParseException {
-        return LocalDate.parse(text, DateTimeFormatter.ISO_DATE);
+    public LocalDate parse(String text, Locale locale)  {
+        return LocalDate.parse(text, dateTimeFormatter);
     }
 
     @Override

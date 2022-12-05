@@ -8,12 +8,11 @@ package com.onwumere.bright.employeemanagementsystem.controller;
 
 import com.onwumere.bright.employeemanagementsystem.model.Employee;
 import com.onwumere.bright.employeemanagementsystem.repository.EmployeeRepository;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -50,10 +49,43 @@ public class EmployeeController {
         return "add-employee";
     }
 
+    @GetMapping("/view/{id}")
+    public String editStudentForm(@PathVariable Long id, Model model){
+        model.addAttribute("viewEmployee", employeeRepository.findById(id).get());
+        return "view-employee";
+    }
+
     @PostMapping("/save")
-    public String createEmployee(Model model, Employee employee){
-        employeeRepository.save(employee);
-        return "redirect:/employee/add";
+    public String createEmployee(@Valid Employee employee, Errors errors){
+        if (!errors.hasErrors()){
+            employeeRepository.save(employee);
+            return "redirect:/employee"; //if everything is okay, go back to the home page
+        }
+        return "add-employee";  //stay on the add-employee page if there are errors
+    }
+
+    @GetMapping("/{id}")
+    public String deleteStudent(@PathVariable Long id){
+        employeeRepository.deleteById(id);
+        return "redirect:/employee";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String editEmployee(@PathVariable Long id, Model model){
+        model.addAttribute("employee", employeeRepository.findById(id).get());
+        return "edit-employee";
+    }
+
+    @PostMapping("/{id}")
+    public String updateEmployee(@PathVariable Long id, @ModelAttribute("employee") Employee employee){
+        //get employee from database by id
+        Employee existingEmployee = employeeRepository.findById(id).get();
+        existingEmployee.setFirstName(employee.getFirstName());
+        existingEmployee.setLastName(employee.getLastName());
+        existingEmployee.setEmail(employee.getEmail());
+        existingEmployee.setPhoneNumber(employee.getPhoneNumber());
+        employeeRepository.save(existingEmployee);
+        return "redirect:/employee";
     }
 
 

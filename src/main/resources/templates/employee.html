@@ -8,47 +8,55 @@
     <li th:each="employee: ${employees}" th:text="${employee}">Employee Person</li>  &lt;!&ndash;Display a list of employee using thymeleaf&ndash;&gt;
 </ol>-->
 
-
-
 <div class="container my-3">
     <div class="row my-3">
         <h4>Current Employees</h4>
     </div>
     <table class="table text-center table-bordered table-success table-hover table-striped table-sm">
         <thead>
-        <tr>
-            <th scope="col">Emp Id</th>
-            <th scope="col">Last Name</th>
-            <th scope="col">First Name</th>
-            <th scope="col">Email</th>
-            <th scope="col">Date of Birth</th>
-            <th scope="col">Salary</th>
-            <th scope="col">SSN</th>
-            <th scope="col">Phone Number</th>
-        </tr>
+            <tr>
+                <th scope="col">Emp Id</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Date of Birth</th>
+                <!--<th scope="col">Salary</th>
+                <th scope="col">SSN</th>
+                <th scope="col">Phone Number</th>-->
+                <th scope="col">Actions</th>
+            </tr>
         </thead>
         <tbody>
-        <tr th:each="employee: ${employees}">
-            <th scope="row" th:text="${employee.empId}">1</th>
-            <td th:text="${employee.lastName}">Mark</td>
-            <td th:text="${employee.firstName}">Otto</td>
-            <td th:text="${employee.email}">Otto</td>
-            <td th:text="${{employee.dateOfBirth}}">Otto</td>
-            <td th:text="${{employee.salary}}">Otto</td>
-            <td th:text="${employee.ssn}">Otto</td>
-            <td th:text="${employee.phoneNumber}">Otto</td>
-        </tr>
-        <tr th:remove="all"> <!--Do not display this row in when started through spring-->
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-        </tr>
-        <tr th:remove="all"> <!--Do not display this row in when started through spring-->
-            <th scope="row">3</th>
-            <td colspan="2">Larry the Bird</td>
-            <td>@twitter</td>
-        </tr>
+            <tr th:if="${#lists.isEmpty(employees)}">
+                <td colspan="8" class="text-center">No Data</td>
+            </tr>
+            <tr th:each="employee: ${employees}">
+                <th scope="row" th:text="${employee.empId}">1</th>
+                <td th:text="${employee.firstName}">Otto</td>
+                <td th:text="${employee.lastName}">Mark</td>
+                <td th:text="${employee.email}">Otto</td>
+<!--                <td th:text="${{employee.dateOfBirth}}">Otto</td>-->    <!-- This is used if the formatter defined is to be used-->
+                <td th:text="${#temporals.format(employee.dateOfBirth, 'MMMM dd, yyyy')}">@mdo</td>
+                <!--<td th:text="${{employee.salary}}">Otto</td>
+                <td th:text="${employee.ssn}">Otto</td>
+                <td th:text="${employee.phoneNumber}">Otto</td>-->
+                <td>
+                    <a th:href="@{/employee/view/{id}(id=${employee.id})}" class="btn btn-success btn-sm">View</a>
+                    <a th:href="@{/employee/edit/{id}(id=${employee.id})}" class="btn btn-primary btn-sm">Edit</a>
+                    <a th:href="@{/employee/{id}(id=${employee.id})}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            <tr th:remove="all"> <!--Do not display this row in when started through spring-->
+                <th scope="row">2</th>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+            </tr>
+            <tr th:remove="all"> <!--Do not display this row in when started through spring-->
+                <th scope="row">3</th>
+                <td colspan="2">Larry the Bird</td>
+                <td>@twitter</td>
+            </tr>
         </tbody>
     </table>
 

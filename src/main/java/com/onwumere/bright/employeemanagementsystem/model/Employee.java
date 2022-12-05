@@ -31,6 +31,8 @@ public class Employee {
 
     private String lastName;
 
+    private String email;
+
     private LocalDate dateOfBirth;
 
     private BigDecimal salary;

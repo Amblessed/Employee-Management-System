@@ -33,7 +33,7 @@ public class RandomEmployee {
         int empId = faker.number().numberBetween(100000, 900000);
         String firstName = name.firstName();
         String lastName = name.lastName();
-        // String email = firstName + "." + lastName + "@gmail.com";
+        String email = firstName + "." + lastName + "@gmail.com";
         int year = secureRandom.nextInt(1960,1998);
         int month = secureRandom.nextInt(1,13);
         int dayBound = switch(month){
@@ -44,9 +44,10 @@ public class RandomEmployee {
         int day = secureRandom.nextInt(1,dayBound);
         int salary = secureRandom.nextInt(100000,900001);
         String ssn = faker.idNumber().ssnValid();
-        String phoneNo = faker.number().numberBetween(200, 1000) + "-" + faker.number().numberBetween(10, 100) + "-" + faker.number().numberBetween(1000, 10000);
+
+        String phoneNo = "+1 " + "(" + faker.number().numberBetween(100, 550) + ") " + faker.number().numberBetween(580, 1000) + "-" + faker.number().numberBetween(1000, 10000);
         /* null would make the database to generate the IDs for us. */
-        return new Employee(null, empId, firstName, lastName, LocalDate.of(year, month, day), new BigDecimal(salary), ssn,  phoneNo);
+        return new Employee(null, empId, firstName, lastName, email.toLowerCase(), LocalDate.of(year, month, day), new BigDecimal(salary), ssn,  phoneNo);
 
     }
 

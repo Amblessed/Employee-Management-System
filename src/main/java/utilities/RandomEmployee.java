@@ -47,7 +47,8 @@ public class RandomEmployee {
 
         String phoneNo = "+1 " + "(" + faker.number().numberBetween(100, 550) + ") " + faker.number().numberBetween(580, 1000) + "-" + faker.number().numberBetween(1000, 10000);
         /* null would make the database to generate the IDs for us. */
-        return new Employee(null, empId, firstName, lastName, email.toLowerCase(), LocalDate.of(year, month, day), new BigDecimal(salary), ssn,  phoneNo);
+        return new Employee(null, empId, firstName, lastName, email.toLowerCase(), LocalDate.of(year, month, day), new BigDecimal(salary), ssn,  phoneNo, null);
+        //return new Employee();
 
     }
 
@@ -58,5 +59,10 @@ public class RandomEmployee {
         }
         return randomEmployees;
     }
+
+
+    /*public static void main(String[] args) {
+        getRandomEmployees(30).forEach(System.out::println);
+    }*/
 
 }

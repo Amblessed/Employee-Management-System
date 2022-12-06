@@ -9,7 +9,11 @@
         <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card border-0">
             <h1 class="text-center"> Create Employee</h1>
             <div class="card-body">
-                <form th:action="@{/employee/save}" th:object="${employee}" method="POST">
+                <form th:action="@{/employee/save}" th:object="${employee}" method="POST" enctype="multipart/form-data">
+
+                    <div class="alert alert-danger" role="alert" th:if="${errorMsg}" th:text="${errorMsg}">
+                        A simple danger alert—check it out!
+                    </div>
 
                     <div class="form-group mb-3 form-floating"> <!-- *{firstName} short way of writing ${person.firstName}. that is bind it to firstName-->
                         <input type="text" name="firstName" th:field="*{firstName}" th:errorclass="is-invalid" placeholder="Employee First Name"
@@ -82,6 +86,11 @@
                         <div id="validationDateOfBirth" class="invalid-feedback" th:errors="*{dateOfBirth}">
                             Please choose a username.
                         </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="photoFileName" class="form-label">Photo file</label>
+                        <input class="form-control" type="file" id="photoFileName" th:field="*{photoFileName}">
                     </div>
 
                    <!-- <div class="form-group mb-3 form-floating">

@@ -57,7 +57,14 @@ public class Employee {
 
     private String photoFileName;
 
-
-
-
+    public Employee(int empId, String firstName, String lastName, String email, LocalDate dateOfBirth, BigDecimal salary, String ssn, String phoneNumber) {
+        this.empId = empId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.dateOfBirth = dateOfBirth;
+        this.salary = salary;
+        this.ssn = ssn;
+        this.phoneNumber = phoneNumber;
+    }
 }

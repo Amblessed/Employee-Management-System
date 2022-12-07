@@ -9,6 +9,8 @@ import com.onwumere.bright.employeemanagementsystem.model.Employee;
 import com.onwumere.bright.employeemanagementsystem.repository.EmployeeRepository;
 import com.onwumere.bright.employeemanagementsystem.repository.FileStorageRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,5 +56,13 @@ public class EmployeeService {
 
     public Employee findEmployeeByFirstName(String firstName){
         return employeeRepository.findEmployeeByFirstName(firstName);
+    }
+
+    public Employee findEmployeeByEmpId(int empId){
+        return employeeRepository.findEmployeeByEmpId(empId);
+    }
+
+    public Page<Employee> findAll(Pageable pageable) {
+        return employeeRepository.findAll(pageable);
     }
 }

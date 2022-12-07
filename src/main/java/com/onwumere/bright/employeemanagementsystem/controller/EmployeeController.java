@@ -14,6 +14,9 @@ import com.onwumere.bright.employeemanagementsystem.service.EmployeeService;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -44,8 +47,8 @@ public class EmployeeController {
     }
 
     @ModelAttribute("employees")   //This method would run before any handler method
-    public List<Employee> getEmployees(){
-        return employeeRepository.findAll();
+    public Page<Employee> getEmployees(@PageableDefault(size = 10) Pageable page){
+        return employeeService.findAll(page);
     }
 
     @ModelAttribute("employee")

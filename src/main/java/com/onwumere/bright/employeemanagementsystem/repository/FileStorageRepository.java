@@ -44,6 +44,15 @@ public class FileStorageRepository {
         }
     }
 
+    public void deleteByName(String fileName) {
+        Path filePath = Path.of(storageFolder).resolve(fileName).normalize();
+        try {
+            Files.deleteIfExists(filePath);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public void deleteAllByName(Collection<String> deleteFileNames) {
         deleteFileNames = deleteFileNames.stream()
                 .filter(Objects::nonNull)

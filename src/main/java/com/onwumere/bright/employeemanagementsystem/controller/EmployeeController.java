@@ -10,9 +10,13 @@ import com.onwumere.bright.employeemanagementsystem.exception.StorageException;
 import com.onwumere.bright.employeemanagementsystem.model.Employee;
 import com.onwumere.bright.employeemanagementsystem.repository.EmployeeRepository;
 import com.onwumere.bright.employeemanagementsystem.repository.FileStorageRepository;
+import com.onwumere.bright.employeemanagementsystem.service.EmployeeService;
 import jakarta.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -34,14 +38,17 @@ public class EmployeeController {
     private final EmployeeRepository employeeRepository;
     private final FileStorageRepository fileStorageRepository;
 
-    public EmployeeController(EmployeeRepository employeeRepository, FileStorageRepository fileStorageRepository) {
+    private final EmployeeService employeeService;
+
+    public EmployeeController(EmployeeRepository employeeRepository, FileStorageRepository fileStorageRepository, EmployeeService employeeService) {
         this.employeeRepository = employeeRepository;
         this.fileStorageRepository = fileStorageRepository;
+        this.employeeService = employeeService;
     }
 
     @ModelAttribute("employees")   //This method would run before any handler method
-    public List<Employee> getEmployees(){
-        return employeeRepository.findAll();
+    public Page<Employee> getEmployees(@PageableDefault(size = 10) Pageable page){
+        return employeeService.findAll(page);
     }
 
     @ModelAttribute("employee")
@@ -51,8 +58,6 @@ public class EmployeeController {
 
     @GetMapping
     public String showEmployees(){
-        //List<Employee> employees = RandomEmployee.getRandomEmployees(8);
-        //model.addAttribute("employees", employees);
         return "employee";   //this means show a view called
     }
 
@@ -64,9 +69,10 @@ public class EmployeeController {
 
     @GetMapping("/view/{id}")
     public String editStudentForm(@PathVariable Long id, Model model){
-        model.addAttribute("viewEmployee", employeeRepository.findById(id).get());
+        model.addAttribute("viewEmployee", employeeService.findById(id));
         return "view-employee";
     }
+
 
     @GetMapping("/images/{resource}")
     public ResponseEntity<Resource> getResource(@PathVariable String resource){
@@ -86,8 +92,7 @@ public class EmployeeController {
         log.info("Errors: " + errors);
         if (!errors.hasErrors()){
             try {
-                fileStorageRepository.save(photoFile.getOriginalFilename(), photoFile.getInputStream());
-                employeeRepository.save(employee);
+                employeeService.save(employee, photoFile.getInputStream());
                 return "redirect:/employee"; //if everything is okay, go back to the home page
             } catch (StorageException e) {
                 model.addAttribute("errorMsg", "System is unable to accept images at this time. Please try again later");
@@ -99,9 +104,11 @@ public class EmployeeController {
 
     @GetMapping("/{id}")
     public String deleteStudent(@PathVariable Long id){
-        employeeRepository.deleteById(id);
+        employeeService.deleteById(id);
         return "redirect:/employee";
     }
+
+
 
     @GetMapping("/edit/{id}")
     public String editEmployee(@PathVariable Long id, Model model){

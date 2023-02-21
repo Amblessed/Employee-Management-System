@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 
 import static java.lang.String.format;
 
@@ -37,7 +36,6 @@ public class EmployeeController {
 
     private final EmployeeRepository employeeRepository;
     private final FileStorageRepository fileStorageRepository;
-
     private final EmployeeService employeeService;
 
     public EmployeeController(EmployeeRepository employeeRepository, FileStorageRepository fileStorageRepository, EmployeeService employeeService) {
@@ -56,20 +54,32 @@ public class EmployeeController {
         return new Employee();
     }
 
-    @GetMapping
+    //@GetMapping(value = "/index")
+    @GetMapping()
+    public String viewEmployees(Model model, @RequestParam(name = "keyword", defaultValue = "") String keyword, @PageableDefault(size = 50) Pageable page){
+        Page<Employee> employees = employeeService.findEmployeesByNameOrEmpId(keyword, page);
+        model.addAttribute("listEmployees", employees);
+        model.addAttribute("keyword", keyword);
+        return "employee";
+    }
+
+
+   /* @GetMapping
     public String showEmployees(){
         return "employee";   //this means show a view called
-    }
+    }*/
 
     @GetMapping("/add")
     public String displayEmployeeForm(Model model){
         model.addAttribute("employee", new Employee());
+        model.addAttribute("pageTitle", "Add Employee");
         return "add-employee";
     }
 
     @GetMapping("/view/{id}")
     public String editStudentForm(@PathVariable Long id, Model model){
         model.addAttribute("viewEmployee", employeeService.findById(id));
+        model.addAttribute("pageTitle", employeeService.findById(id).getFirstName() + " " + employeeService.findById(id).getLastName());
         return "view-employee";
     }
 
@@ -103,7 +113,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public String deleteStudent(@PathVariable Long id){
+    public String deleteEmployee(@PathVariable Long id){
         employeeService.deleteById(id);
         return "redirect:/employee";
     }
@@ -113,6 +123,7 @@ public class EmployeeController {
     @GetMapping("/edit/{id}")
     public String editEmployee(@PathVariable Long id, Model model){
         model.addAttribute("employee", employeeRepository.findById(id).get());
+        model.addAttribute("pageTitle", "Edit Employee");
         return "edit-employee";
     }
 
@@ -129,6 +140,18 @@ public class EmployeeController {
             fileStorageRepository.save(photoFile.getOriginalFilename(), photoFile.getInputStream());
         }
         employeeRepository.save(existingEmployee);
+        return "redirect:/employee";
+    }
+
+    @PostMapping(params = "action=import")
+    public String importCSV(@RequestParam MultipartFile csvFile){
+        log.info("File Name: " + csvFile.getOriginalFilename());
+        log.info("File Size: " + csvFile.getSize());
+        try {
+            employeeService.importCSV(csvFile.getInputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return "redirect:/employee";
     }
 

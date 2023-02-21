@@ -6,7 +6,7 @@
 <div class="container my-3">
     <!-- Content here -->
     <div class="row my-3">
-        <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card border-0">
+        <div class="col-lg-8 col-md-8 col-sm-8 container justify-content-center card border-0">
             <h1 class="text-center"> Create Employee</h1>
             <div class="card-body">
                 <form th:action="@{/employee/save}" th:object="${employee}" method="POST" enctype="multipart/form-data">
@@ -15,21 +15,51 @@
                         A simple danger alert—check it out!
                     </div>
 
-                    <div class="form-group mb-3 form-floating"> <!-- *{firstName} short way of writing ${person.firstName}. that is bind it to firstName-->
-                        <input type="text" name="firstName" th:field="*{firstName}" th:errorclass="is-invalid" placeholder="Employee First Name"
-                               class="form-control" id="floatingFirstName">
-                        <label class="form-label" for="floatingFirstName">First Name</label>
-                        <div id="validationFirstName" class="invalid-feedback" th:errors="*{firstName}">
-                            Please choose a username.
+                    <div class="input-group">
+                        <div class="form-group mb-3 form-floating">
+                            <input type="text" name="firstName" th:field="*{firstName}" th:errorclass="is-invalid" placeholder="Employee First Name"
+                                   class="form-control" id="floatingFirstName">
+                            <label class="form-label" for="floatingFirstName">First Name</label>
+                            <div id="validationFirstName" class="invalid-feedback" th:errors="*{firstName}">
+                                Please choose a username.
+                            </div>
                         </div>
 
+                        <div class="form-group mb-3 ms-1 form-floating">
+                            <input type="text" name="lastName" th:field="*{lastName}" th:errorclass="is-invalid" placeholder="Employee Last Name"
+                                   class="form-control" id="floatingLastName">
+                            <label class="form-label" for="floatingLastName">Last Name</label>
+                            <div id="validationLastName" class="invalid-feedback" th:errors="*{lastName}">
+                                Please choose a username.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <div class="form-group mb-3 form-floating">
+                            <input type="text" name="fathersName" th:field="*{parent.fathersName}" th:errorclass="is-invalid" placeholder="Employee Father's Name"
+                                   class="form-control" id="floatingFathersName">
+                            <label class="form-label" for="floatingFathersName">Father's Name</label>
+                            <div id="validationFathersName" class="invalid-feedback" th:errors="*{parent.fathersName}">
+                                Please choose a username.
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3 ms-1 form-floating">
+                            <input type="text" name="mothersName" th:field="*{parent.mothersName}" th:errorclass="is-invalid" placeholder="Employee Mother's Name"
+                                   class="form-control" id="floatingMothersName">
+                            <label class="form-label" for="floatingMothersName">Mother's Name</label>
+                            <div id="validationMothersName" class="invalid-feedback" th:errors="*{parent.mothersName}">
+                                Please choose a username.
+                            </div>
+                        </div>
                     </div>
 
                     <div class="form-group mb-3 form-floating">
-                        <input type="text" name="lastName" th:field="*{lastName}" th:errorclass="is-invalid" placeholder="Employee Last Name"
-                               class="form-control" id="floatingLastName">
-                        <label class="form-label" for="floatingLastName">Last Name</label>
-                        <div id="validationLastName" class="invalid-feedback" th:errors="*{lastName}">
+                        <input type="text" name="mothersMaidenName" th:field="*{parent.mothersMaidenName}" th:errorclass="is-invalid" placeholder="Employee Mother's Maiden Name"
+                               class="form-control" id="floatingMothersMaidenName">
+                        <label class="form-label" for="floatingMothersMaidenName">Mother's Maiden Name</label>
+                        <div id="validationMothersMaidenName" class="invalid-feedback" th:errors="*{parent.mothersMaidenName}">
                             Please choose a username.
                         </div>
                     </div>
@@ -43,11 +73,28 @@
                         </div>
                     </div>
 
+                    <div class="form-group mb-3 form-floating">
+                        <input type="text" name="phoneNo" th:field="*{phoneNumber}" th:errorclass="is-invalid" placeholder="Employee Phone No"
+                               class="form-control" id="floatingPhoneNo">
+                        <label class="form-label" for="floatingPhoneNo">Phone Number</label>
+                        <div id="validationPhoneNo" class="invalid-feedback" th:errors="*{phoneNumber}">
+                            Please choose a username.
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="dob" class="form-label">Date of Birth</label>
+                        <input type="date" class="form-control" id="dob" th:field="*{dateOfBirth}" th:errorclass="is-invalid" aria-describedby="dobHelp">
+                        <div id="validationDateOfBirth" class="invalid-feedback" th:errors="*{dateOfBirth}">
+                            Please choose a username.
+                        </div>
+                    </div>
+
 
                     <div class="form-group mb-3 form-floating">
                         <input type="number" name="empId" th:field="*{empId}" th:errorclass="is-invalid" placeholder="Employee Number"
                                class="form-control" id="floatingEmpNo">
-                        <label class="form-label" for="floatingEmpNo">Employee No</label>
+                        <label class="form-label" for="floatingEmpNo">Employee Id</label>
                         <div id="validationEmpId" class="invalid-feedback" th:errors="*{empId}">   <!--Only works if there are errors-->
                             Please choose a username.
                         </div>
@@ -71,33 +118,72 @@
                         </div>
                     </div>
 
-                    <div class="form-group mb-3 form-floating">
-                        <input type="text" name="phoneNo" th:field="*{phoneNumber}" th:errorclass="is-invalid" placeholder="Employee Phone No"
-                               class="form-control" id="floatingPhoneNo">
-                        <label class="form-label" for="floatingPhoneNo">Phone Number</label>
-                        <div id="validationPhoneNo" class="invalid-feedback" th:errors="*{phoneNumber}">
+                    <div class="mb-3">
+                        <label for="doe" class="form-label">Date of Employment</label>
+                        <input type="date" class="form-control" id="doe" th:field="*{dateOfEmployment}" th:errorclass="is-invalid" aria-describedby="dobHelp">
+                        <div id="validationDateOfEmployment" class="invalid-feedback" th:errors="*{dateOfEmployment}">
                             Please choose a username.
                         </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="dob" class="form-label">Date of Birth</label>
-                        <input type="date" class="form-control" id="dob" th:field="*{dateOfBirth}" th:errorclass="is-invalid" aria-describedby="dobHelp">
-                        <div id="validationDateOfBirth" class="invalid-feedback" th:errors="*{dateOfBirth}">
+
+
+                    <div class="form-group mb-3 form-floating">
+                        <input type="text" name="county" th:field="*{location.county}" th:errorclass="is-invalid" placeholder="Employee County"
+                               class="form-control" id="floatingCounty">
+                        <label class="form-label" for="floatingCounty">County</label>
+                        <div id="validationCounty" class="invalid-feedback" th:errors="*{location.county}">
                             Please choose a username.
                         </div>
                     </div>
+
+                    <div class="form-group mb-3 form-floating">
+                        <input type="text" name="city" th:field="*{location.city}" th:errorclass="is-invalid" placeholder="Employee City"
+                               class="form-control" id="floatingCity">
+                        <label class="form-label" for="floatingCity">City</label>
+                        <div id="validationCity" class="invalid-feedback" th:errors="*{location.city}">
+                            Please choose a username.
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3 form-floating">
+                        <input type="text" name="state" th:field="*{location.state}" th:errorclass="is-invalid" placeholder="Employee State"
+                               class="form-control" id="floatingState">
+                        <label class="form-label" for="floatingState">State</label>
+                        <div id="validationState" class="invalid-feedback" th:errors="*{location.state}">
+                            Please choose a username.
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3 form-floating">
+                        <input type="text" name="zip" th:field="*{location.zip}" th:errorclass="is-invalid" placeholder="Employee Zip"
+                               class="form-control" id="floatingZip">
+                        <label class="form-label" for="floatingZip">Zipcode</label>
+                        <div id="validationZip" class="invalid-feedback" th:errors="*{location.zip}">
+                            Please choose a username.
+                        </div>
+                    </div>
+
+                    <label class="form-label">Region
+                        <select class="form-select mb-3" name="region">
+                            <option th:each="regionOption : ${T(com.onwumere.bright.employeemanagementsystem.model.Region).values()}"
+                                    th:value="${regionOption}" th:text="${regionOption.displayValue}"></option>
+                        </select>
+                    </label>
+
+                    <!--<label>
+                        <select class="form-select mb-3" name="region">
+                            <option th:each="regionOption : *{location.region.values()}"
+                                    th:value="${regionOption}" th:text="${regionOption.displayValue}"></option>
+                        </select>
+                    </label>-->
+
+
 
                     <div class="mb-3">
                         <label for="photoFileName" class="form-label">Photo file</label>
                         <input class="form-control" type="file" id="photoFileName" th:field="*{photoFileName}">
                     </div>
-
-                   <!-- <div class="form-group mb-3 form-floating">
-                        <input type="text" name="email" th:field="${employee.email}" placeholder="Employee Email"
-                               class="form-control" id="floatingEmail">
-                        <label class="form-label" for="floatingEmail">Email</label>
-                    </div>-->
 
                     <div class="box">
                         <button type="submit" class="btn btn-primary">Create Employee</button>

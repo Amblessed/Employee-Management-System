@@ -8,16 +8,26 @@
   <div class="row my-3">
     <div class="col-lg-6 col-md-6 col-sm-6 container justify-content-center card border-0">
       <h1 class="text-center" th:text="|${viewEmployee.firstName} ${viewEmployee.lastName}|">Employee Details</h1>
-      <div class="card-body fst-italic">
+      <div class="card-body">
         <img class="card-img-top mb-2" th:if="${viewEmployee.photoFileName}" th:src="@{/employee/images/{filename}(filename=${viewEmployee.photoFileName})}" width="250px" height="450px">
         <h3 th:text="|EmpId: ${viewEmployee.empId}|"></h3>
         <h3 th:text="|First Name: ${viewEmployee.firstName}|"></h3>
         <h3 th:text="|Last Name: ${viewEmployee.lastName}|"></h3>
-        <h3 th:text="|Date of Birth: ${{viewEmployee.dateOfBirth}}|"></h3>
+<!--        <h3 th:text="|Date of Birth: ${{viewEmployee.dateOfBirth}}|"></h3>-->
+        <h3 th:text="|Date of Birth: ${{#temporals.format(viewEmployee.dateOfBirth, 'MMMM dd, yyyy')}}|"></h3>
+      <!--  <td th:text="${#temporals.format(viewEmployee.dateOfBirth, 'MMMM dd, yyyy')}">@mdo</td>-->
         <h3 th:text="|Email: ${viewEmployee.email}|"></h3>
         <h3 th:text="|Social Security Number: ${viewEmployee.ssn}|"></h3>
         <h3 th:text="|Mobile Number: ${viewEmployee.phoneNumber}|"></h3>
         <h3 th:text="|Salary: ${{viewEmployee.salary}}|"></h3>
+        <h3 th:text="|Date of Employment: ${{#temporals.format(viewEmployee.dateOfEmployment, 'MMMM dd, yyyy')}}|"></h3>
+        <h3 th:text="|Father Name: ${{viewEmployee.parent.fathersName}}|"></h3>
+        <h3 th:text="|Mother Name: ${{viewEmployee.parent.mothersName}}|"></h3>
+        <h3 th:text="|Mother's maiden Name: ${{viewEmployee.parent.mothersMaidenName}}|"></h3>
+        <h3 th:text="|County: ${{viewEmployee.location.county}}|"></h3>
+        <h3 th:text="|City: ${{viewEmployee.location.city}}|"></h3>
+        <h3 th:text="|State: ${{viewEmployee.location.state}}|"></h3>
+        <h3 th:text="|Region: ${{viewEmployee.location.region}}|"></h3>
         <div class="row my-4">
           <div class="col-lg-3">
             <a th:href="@{/employee}" class="btn btn-primary btn-lg mb-3">Back</a>

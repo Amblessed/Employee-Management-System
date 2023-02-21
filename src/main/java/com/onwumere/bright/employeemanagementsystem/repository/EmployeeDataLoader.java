@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import static utilities.RandomEmployee.getRandomEmployees;
 
 /*ApplicationRunner runs immediately after some minutes spring is started*/
 @Component
@@ -28,10 +27,10 @@ public class EmployeeDataLoader implements ApplicationRunner {
 
     @Override  //To have some initial data inside the database
     public void run(ApplicationArguments args) {
-        if (employeeRepository.count() == 0) {
+        /*if (employeeRepository.count() == 0) {
             List<Employee> people = getRandomEmployees(20);
             employeeRepository.saveAll(people);
-        }
+        }*/
     }
 
 }

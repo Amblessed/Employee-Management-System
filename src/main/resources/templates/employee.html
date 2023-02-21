@@ -3,16 +3,19 @@
 <head th:replace="~{layouts :: header}"></head>
 <body>
 <nav th:replace="~{layouts :: navigation}"></nav>
-<!--Here are some employee:
-<ol>
-    <li th:each="employee: ${employees}" th:text="${employee}">Employee Person</li>  &lt;!&ndash;Display a list of employee using thymeleaf&ndash;&gt;
-</ol>-->
 
 <div class="container my-3">
     <div class="row my-3">
         <h4>Current Employees</h4>
     </div>
-    <table class="table text-center table-bordered table-success table-hover table-striped table-sm">
+    <form th:action="@{/employee}" method="GET">
+        <div class="input-group mb-3">
+            <input type="text" name="keyword" th:value="${keyword}" aria-describedby="button-addon2">
+            <button class="btn btn-success btn-sm" type="submit" id="button-addon2">Search</button>
+        </div>
+    </form>
+    <form method="post" enctype="multipart/form-data">
+    <table class="table text-center table-bordered table-hover table-sm">
         <thead>
             <tr>
                 <th scope="col">Emp Id</th>
@@ -20,59 +23,60 @@
                 <th scope="col">Last Name</th>
                 <th scope="col">Email</th>
                 <th scope="col">Date of Birth</th>
-                <!--<th scope="col">Salary</th>
                 <th scope="col">SSN</th>
+                <!--<th scope="col">Salary</th>
                 <th scope="col">Phone Number</th>-->
 <!--                <th scope="col">Photo</th>-->
                 <th scope="col">Actions</th>
             </tr>
         </thead>
         <tbody>
-            <tr th:if="${#lists.isEmpty(employees)}">
+            <tr th:if="${#lists.isEmpty(listEmployees)}">
                 <td colspan="8" class="text-center">No Data</td>
             </tr>
-            <tr th:each="employee: ${employees}">
+            <tr th:each="employee, status: ${listEmployees}">
                 <th scope="row" th:text="${employee.empId}">1</th>
                 <td th:text="${employee.firstName}">Otto</td>
                 <td th:text="${employee.lastName}">Mark</td>
                 <td th:text="${employee.email}">Otto</td>
 <!--                <td th:text="${{employee.dateOfBirth}}">Otto</td>-->    <!-- This is used if the formatter defined is to be used-->
                 <td th:text="${#temporals.format(employee.dateOfBirth, 'MMMM dd, yyyy')}">@mdo</td>
-                <!--<td th:text="${{employee.salary}}">Otto</td>
                 <td th:text="${employee.ssn}">Otto</td>
+                <!--<td th:text="${{employee.salary}}">Otto</td>
                 <td th:text="${employee.phoneNumber}">Otto</td>-->
 <!--                <td th:text="${employee.photoFileName}">Otto</td>-->
                 <td>
+
                     <a th:href="@{/employee/view/{id}(id=${employee.id})}" class="btn btn-success btn-sm">View</a>
                     <a th:href="@{/employee/edit/{id}(id=${employee.id})}" class="btn btn-primary btn-sm">Edit</a>
-                    <a th:href="@{/employee/{id}(id=${employee.id})}" class="btn btn-danger btn-sm">Delete</a>
+                    <a th:href="@{/employee/{id}(id=${employee.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this employee?')">Delete</a>
                 </td>
-            </tr>
-            <tr th:remove="all"> <!--Do not display this row in when started through spring-->
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-            </tr>
-            <tr th:remove="all"> <!--Do not display this row in when started through spring-->
-                <th scope="row">3</th>
-                <td colspan="2">Larry the Bird</td>
-                <td>@twitter</td>
+
+
             </tr>
         </tbody>
     </table>
 
     <nav aria-label="Page navigation example">
         <ul class="pagination">
-            <li class="page-item" th:classappend="${employees.first} ? 'disabled'"><a class="page-link" th:href="@{employee(page=${employees.number - 1})}">Previous</a></li>
-            <li th:each="page : ${#numbers.sequence(0, employees.totalPages - 1)}" class="page-item" th:classappend="${employees.number} == ${page} ? 'active' " ><a class="page-link" th:href="@{employee(page=${page})}" th:text="${page + 1}">1</a></li>
+            <li class="page-item" th:classappend="${listEmployees.first} ? 'disabled'"><a class="page-link" th:href="@{employee(keyword=${keyword}, page=${listEmployees.number - 1})}">Previous</a></li>
+<!--            <li th:each="page : ${#numbers.sequence(0, listEmployees.totalPages - 1)}" class="page-item" th:classappend="${listEmployees.number} == ${page} ? 'active'"><a class="page-link" th:href="@{employee(keyword=${keyword},page=${page})}" th:text="${page + 1}">1</a></li>-->
             <!--<li class="page-item"><a class="page-link" href="#">1</a></li>-->
             <li th:remove="all" class="page-item"><a class="page-link" href="#">2</a></li>
             <li th:remove="all" class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item" th:classappend="${employees.last} ? 'disabled'"><a class="page-link" th:href="@{employee(page=${employees.number + 1})}">Next</a></li>
+            <li class="page-item" th:classappend="${listEmployees.last} ? 'disabled'"><a class="page-link" th:href="@{employee(keyword=${keyword},page=${listEmployees.number + 1})}">Next</a></li>
 
         </ul>
     </nav>
+
+    <div class="mb-3">
+        <label for="csvFile" class="form-label">CSV File</label>
+        <input class="form-control" type="file" id="csvFile" name="csvFile">
+    </div>
+
+    <button type="submit" name="action" value="import" class="btn btn-success mb-5 me-2">Import CSV</button>
+    </form>
+
 
 </div>
 
